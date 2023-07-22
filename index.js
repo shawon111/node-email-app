@@ -10,7 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}))
 
 // setup template engine
+const viewsPath = path.join(__dirname, './views');
 app.set('view engine', 'hbs');
+app.set('views', viewsPath);
 // setup static path
 const staticPath = path.join(__dirname, './public');
 app.use(express.static(staticPath));
