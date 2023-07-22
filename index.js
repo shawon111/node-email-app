@@ -17,11 +17,6 @@ app.set('views', viewsPath);
 const staticPath = path.join(__dirname, './public');
 app.use(express.static(staticPath));
 
-// home route
-app.get('/', (req, res)=>{
-    res.render('index')
-})
-
 // creating transporder
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -33,6 +28,22 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// home route
+app.get('/', (req, res)=>{
+    res.render('index')
+})
+
+// email success route
+app.get('/success', (req, res)=>{
+    res.status(202).render('successful');
+})
+
+// email failed route
+app.get('/emailfailed', (req, res)=>{
+    res.status(500).render('failed');
+})
+
+// send email
 app.post('/sendmail', async(req, res)=>{
     try{
         const info = await transporter.sendMail({
@@ -63,17 +74,13 @@ app.post('/sendmail', async(req, res)=>{
                     }
                 ]
             });
-            res.status(201).json({
-                msg: 'email sent successfully'
-            })
+            res.status(201).redirect('/success')
         }else{
-            res.status(500).json({
-                msg: 'Email sending failed'
-            })
+            res.status(500).redirect('/emailfailed')
         }
     }catch(err){
         console.log("email_error ",err)
-        res.status(500).send("email not sent")
+        res.status(500).redirect('/emailfailed')
     }
 })
 
