@@ -22,7 +22,7 @@ app.get('/', (req, res)=>{
 
 // creating transporder
 const transporter = nodemailer.createTransport({
-    host: "smtp.zoho.com",
+    host: process.env.SMTP_HOST,
     port: 465,
     secure: true,
     auth: {
@@ -48,7 +48,7 @@ app.post('/sendmail', async(req, res)=>{
                 to: req.body.email,
                 subject: "Fabby Themes Received Your Message!",
                 html: `<div>
-                    <h2>Hi ${req.body.senderName},</h2>
+                    <h2>Hi ${req.body.senderName}!,</h2>
                     <p>We just received your message. Our team will get back to you soon.</p>
                     <p>Thanks</p>
                     <img src="cid:fabbythemes" alt="fabby themes logo" />
