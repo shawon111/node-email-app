@@ -75,6 +75,9 @@ app.post('/sendmail', async(req, res)=>{
     }
 })
 
-app.listen(port, ()=>{
+app.listen(port, (err)=>{
+    if(err){
+        console.log("server error", err)
+    }
     console.log("the server is listening at: ", port)
 })
